@@ -1,0 +1,4 @@
+__pycache__
+.env
+fast_api
+test_db.db
