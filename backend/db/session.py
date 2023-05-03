@@ -2,6 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from core.config import settings
 from sqlalchemy.exc import OperationalError
+from typing import Generator
 
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -15,3 +16,10 @@ engine = create_engine(SQLALCHEMY_DATABASE_URL)
 # except OperationalError as e:
 #     print('Database connection failed:', e)
 SessionLocal = sessionmaker(autocommit=False,autoflush=False,bind=engine)
+
+def get_db() -> Generator:
+    try:
+        db = SessionLocal()
+        yield db
+    finally:
+        db.close()
